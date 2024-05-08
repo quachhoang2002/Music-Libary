@@ -8,6 +8,7 @@ import (
 )
 
 // save file to disk, and return file path
+// if not exist will create new file
 func SaveFile(file *multipart.FileHeader, dir string) (string, error) {
 	src, err := file.Open()
 	if err != nil {
@@ -15,7 +16,7 @@ func SaveFile(file *multipart.FileHeader, dir string) (string, error) {
 	}
 	defer src.Close()
 
-	// Destination
+	// Create file
 	dst, err := os.Create(filepath.Join(dir, file.Filename))
 	if err != nil {
 		return "", err

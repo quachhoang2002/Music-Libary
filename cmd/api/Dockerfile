@@ -17,7 +17,6 @@ COPY . .
 RUN go install github.com/swaggo/swag/cmd/swag@latest
 RUN swag init -g cmd/api/main.go
 RUN go build -o api ./cmd/api
-RUN mkdir -p ./music
 
 ##
 ## STEP 2 - DEPLOY
