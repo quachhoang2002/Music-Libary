@@ -34,6 +34,9 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 WORKDIR /app
 COPY --from=builder /app/api .
 
+## mkdir  music directory
+RUN mkdir -p /app/music
+
 EXPOSE 80
 
 ENTRYPOINT ["./api"]
