@@ -10,20 +10,23 @@ import (
 // save file to disk, and return file path
 // if not exist will create new file
 func SaveFile(file *multipart.FileHeader, dir string) (string, error) {
+	if err := os.MkdirAll(dir, os.ModePerm); err != nil {
+		return "", err
+	}
+
 	src, err := file.Open()
 	if err != nil {
 		return "", err
 	}
 	defer src.Close()
 
-	// Create file
-	dst, err := os.Create(filepath.Join(dir, file.Filename))
+	dstPath := filepath.Join(dir, file.Filename)
+	dst, err := os.Create(dstPath)
 	if err != nil {
 		return "", err
 	}
 	defer dst.Close()
 
-	// Copy
 	if _, err = io.Copy(dst, src); err != nil {
 		return "", err
 	}
