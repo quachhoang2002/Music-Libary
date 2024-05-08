@@ -24,7 +24,7 @@ import (
 // @description Error codes: 1001 - 2000("User Error")
 
 // @version 1
-// @host localhost:8088
+// @host https://t.hoangdeptrai.online/musics
 // @BasePath /
 // @schemes http
 func main() {
