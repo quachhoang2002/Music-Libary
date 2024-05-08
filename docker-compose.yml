@@ -1,0 +1,52 @@
+services:
+    api:
+        build:
+            context: ./
+            dockerfile: cmd/api/Dockerfile
+        image: ${REPO}/api:${TAG}
+        restart: unless-stopped
+        tty: true
+        ports:
+            - ${PORT}:${PORT}
+        env_file:
+            - .env
+        dns:
+            - 8.8.8.8
+            - 8.8.4.4
+        volumes:
+            - /etc/localtime:/etc/localtime:ro # Set docker time
+        networks:
+          - music-service
+    mongodb:
+        image: mongo:latest
+        restart: unless-stopped
+        volumes:
+            - mongo_data:/data/db
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+            MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+            MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+        networks:
+          - music-service
+        #rabbitmq
+    rabbitmq:
+        image: rabbitmq:3-management
+        container_name: rabbitmq
+        restart: always
+        environment:
+            - RABBITMQ_DEFAULT_USER=test
+            - RABBITMQ_DEFAULT_PASS=test
+            - RABBITMQ_DEFAULT_VHOST=test_queue
+        ports:
+            - 5674:5672
+            - 15674:15672
+        networks:
+            - music-service
+
+# # Docker Network
+networks:
+    music-service:
+        driver: bridge
+
+volumes:
+  mongo_data:
