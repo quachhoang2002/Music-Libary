@@ -22,6 +22,7 @@ import (
 // @Param genre formData string true "Genre of the track"
 // @Param release_year formData int true "Release Year of the track"
 // @Param duration formData int true "Duration of the track in seconds"
+// @Param mp3_file formData file true "MP3 file of the track"
 // @Produce json
 // @Tags Music Track
 // @Accept json
@@ -63,7 +64,13 @@ func (h handler) Create(c *gin.Context) {
 // @Param User-Agent header string false "User-Agent" default(Swagger-Codegen/1.0.0/go)
 // @Param Authorization header string true "Bearer JWT token" default(Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjYyYzc3MzU1MmRmMzZjMGJkMjUxNDdkIiwiZ3JvdXBfaWQiOiI2NGY0NDUyNTlkODNkM2JkZDg0ZGZjOWEiLCJncm91cF9yb2xlIjoiYWRtaW4iLCJleHBpcmVkX2F0IjoiMjAyNC0wNS0yN1QxMDo1Nzo0Ny40Mjg1NTgrMDc6MDAiLCJleHAiOjE3MTY3ODIyNjd9.pb6sLIq4F2FDXE2ASWacYRzI5qs1ae48_DeQ2b3jJLU)"
 // @Param Language header string false "Language" default(en)
-// @Param data body updateMusicTrackReq true "data"
+// @Param title formData string true "Title of the track"
+// @Param artist formData string true "Artist of the track"
+// @Param album formData string true "Album of the track"
+// @Param genre formData string true "Genre of the track"
+// @Param release_year formData int true "Release Year of the track"
+// @Param duration formData int true "Duration of the track in seconds"
+// @Param mp3_file formData file true "MP3 file of the track"
 // @Produce json
 // @Tags Music Track
 // @Accept json
@@ -210,7 +217,12 @@ func (h handler) List(c *gin.Context) {
 	pagQuery.Adjust()
 
 	track, err := h.uc.List(ctx, sc, usecase.ListInput{
-		Filter: usecase.Filter{},
+		Filter: usecase.Filter{
+			Title:  req.Title,
+			Artist: req.Artist,
+			Album:  req.Album,
+		},
+		PaginatorQuery: pagQuery,
 	})
 	if err != nil {
 		h.l.Warnf(ctx, "music.http.handler.Update.Update: %v", err)

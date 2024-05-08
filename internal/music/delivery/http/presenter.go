@@ -36,13 +36,13 @@ func newDetailTrackRes(mt models.MusicTrack) detailTrackRes {
 
 // -- create
 type createMusicTrackReq struct {
-	Title       string                  `form:"title" binding:"required"`
-	Artist      string                  `form:"artist" binding:"required"`
-	Album       string                  `form:"album" binding:"required"`
-	Genre       string                  `form:"genre" binding:"required"`
-	ReleaseYear int                     `form:"release_year" binding:"required"`
-	Duration    int                     `form:"duration" binding:"required"`
-	MP3Files    []*multipart.FileHeader `form:"mp3_files" binding:"required"`
+	Title       string                `form:"title" binding:"required"`
+	Artist      string                `form:"artist" binding:"required"`
+	Album       string                `form:"album" binding:"required"`
+	Genre       string                `form:"genre" binding:"required"`
+	ReleaseYear int                   `form:"release_year" binding:"required"`
+	Duration    int                   `form:"duration" binding:"required"`
+	MP3File     *multipart.FileHeader `form:"mp3_file" binding:"required"`
 }
 
 func (r createMusicTrackReq) toInput() usecase.CreateInput {
@@ -53,20 +53,20 @@ func (r createMusicTrackReq) toInput() usecase.CreateInput {
 		Genre:       r.Genre,
 		ReleaseYear: r.ReleaseYear,
 		Duration:    r.Duration,
-		MP3Files:    r.MP3Files,
+		MP3File:     r.MP3File,
 	}
 }
 
 // -- update
 type updateMusicTrackReq struct {
-	ID          string                  `uri:"id"`
-	Name        string                  `form:"name" binding:"required"`
-	Aritst      string                  `form:"artist" binding:"required"`
-	Album       string                  `form:"album" binding:"required"`
-	Genre       string                  `form:"genre" binding:"required"`
-	ReleaseYear int                     `form:"release_year" binding:"required"`
-	Duration    int                     `form:"duration" binding:"required"`
-	MP3Files    []*multipart.FileHeader `form:"mp3_files" binding:"required"`
+	ID          string                `uri:"id"`
+	Name        string                `form:"name" binding:"required"`
+	Aritst      string                `form:"artist" binding:"required"`
+	Album       string                `form:"album" binding:"required"`
+	Genre       string                `form:"genre" binding:"required"`
+	ReleaseYear int                   `form:"release_year" binding:"required"`
+	Duration    int                   `form:"duration" binding:"required"`
+	MP3File     *multipart.FileHeader `form:"mp3_files" binding:"required"`
 }
 
 func (r updateMusicTrackReq) toInput() usecase.UpdateInput {
@@ -79,7 +79,7 @@ func (r updateMusicTrackReq) toInput() usecase.UpdateInput {
 			Genre:       r.Genre,
 			ReleaseYear: r.ReleaseYear,
 			Duration:    r.Duration,
-			MP3Files:    r.MP3Files,
+			MP3File:     r.MP3File,
 		},
 	}
 }
@@ -89,16 +89,6 @@ type listMusicTrackReq struct {
 	Title  string `form:"title"`
 	Artist string `form:"artist"`
 	Album  string `form:"album"`
-}
-
-func (r listMusicTrackReq) toInput() usecase.ListInput {
-	return usecase.ListInput{
-		Filter: usecase.Filter{
-			Title:  r.Title,
-			Artist: r.Artist,
-			Album:  r.Album,
-		},
-	}
 }
 
 type listMusicTrackResp struct {

@@ -5,10 +5,19 @@ import (
 
 	"github.com/xuanhoang/music-library/internal/models"
 	"github.com/xuanhoang/music-library/internal/music/repository"
+	"github.com/xuanhoang/music-library/pkg/file"
 	"github.com/xuanhoang/music-library/pkg/mongo"
 )
 
 func (uc imlUseCase) Create(ctx context.Context, sc models.Scope, ip CreateInput) (models.MusicTrack, error) {
+
+	//create file
+	filePath, err := file.SaveFile(ip.MP3File, fileStorePath)
+	if err != nil {
+		uc.l.Error(ctx, "music.usecase.Create.file.SaveFile", err)
+		return models.MusicTrack{}, err
+	}
+
 	track, err := uc.repo.Create(ctx, sc, repository.CreateOpt{
 		Title:       ip.Title,
 		Artist:      ip.Artist,
@@ -16,6 +25,7 @@ func (uc imlUseCase) Create(ctx context.Context, sc models.Scope, ip CreateInput
 		Genre:       ip.Genre,
 		ReleaseYear: ip.ReleaseYear,
 		Duration:    ip.Duration,
+		MP3FilePath: filePath,
 	})
 	if err != nil {
 		uc.l.Error(ctx, "music.usecase.Create.repo.Create", err)

@@ -18,5 +18,5 @@ type MusicTrack struct {
 	CreatedUserID primitive.ObjectID `bson:"created_user_id"`
 	CreatedAt     time.Time          `bson:"created_at"`
 	UpdatedAt     time.Time          `bson:"updated_at"`
-	DeleteAt      time.Time          `bson:"delete_at,omitempty"`
+	DeleteAt      *time.Time         `bson:"delete_at,omitempty"`
 }

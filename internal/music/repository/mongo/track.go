@@ -10,6 +10,7 @@ import (
 	"github.com/xuanhoang/music-library/pkg/util"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 const (
@@ -76,21 +77,28 @@ func (r implRepository) List(ctx context.Context, sc models.Scope, opt repositor
 	filterQuery := mongo.BuildQueryWithSoftDelete(bson.M{})
 	filter := opt.Filter
 	if filter.Title != "" {
-		filterQuery["title"] = filter.Title
+		//query where like
+		filterQuery["title"] = primitive.Regex{Pattern: filter.Title, Options: "i"}
 	}
 	if filter.Artist != "" {
-		filterQuery["artist"] = filter.Artist
+		//query where like
+		filterQuery["artist"] = primitive.Regex{Pattern: filter.Artist, Options: "i"}
 	}
 	if filter.Album != "" {
 		filterQuery["album"] = filter.Album
 	}
 
-	cur, err := c.Find(ctx, filterQuery)
+	cur, err := c.Find(ctx, filterQuery, options.Find().
+		SetSkip(opt.PaginatorQuery.Offset()).
+		SetLimit(opt.PaginatorQuery.Limit).
+		SetSort(bson.D{
+			{Key: "created_at", Value: -1},
+			{Key: "_id", Value: -1},
+		}))
 	if err != nil {
 		r.l.Error(ctx, "music.repository.Get.Find", err.Error())
 		return nil, paginator.Paginator{}, err
 	}
-	defer cur.Close(ctx)
 
 	var tracks []models.MusicTrack
 	err = cur.All(ctx, &tracks)

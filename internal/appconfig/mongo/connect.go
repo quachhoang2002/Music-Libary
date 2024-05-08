@@ -20,7 +20,7 @@ func Connect(mongoConfig config.MongoConfig, encrypter pkgCrt.Encrypter) (mongo.
 	ctx, cancelFunc := context.WithTimeout(context.Background(), connectTimeout)
 	defer cancelFunc()
 
-	fmt.Println(encrypter.Encrypt("mongodb://mongodb:27017"))
+	fmt.Println(encrypter.Encrypt("mongodb://root:root@mongodb:27017/?authSource=admin"))
 	uri, err := encrypter.Decrypt(mongoConfig.ENCODED_URI)
 	if err != nil {
 		return nil, fmt.Errorf("failed to decrypt mongo uri: %w", err)

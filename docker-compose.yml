@@ -18,14 +18,16 @@ services:
         networks:
           - music-service
     mongodb:
-        image: mongo:latest
-        restart: unless-stopped
+        image: mongo:7
+        container_name: mongodb_music
+        restart: always
+        ports:
+            - 27117:27017
         volumes:
-            - mongo_data:/data/db
+            - ./mongo_data:/data/db
         environment:
-            MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
-            MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-            MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+            - MONGO_INITDB_ROOT_USERNAME=root
+            - MONGO_INITDB_ROOT_PASSWORD=root
         networks:
           - music-service
         #rabbitmq
@@ -38,8 +40,8 @@ services:
             - RABBITMQ_DEFAULT_PASS=test
             - RABBITMQ_DEFAULT_VHOST=test_queue
         ports:
-            - 5674:5672
-            - 15674:15672
+            - 5672:5672
+            - 15672:15672
         networks:
             - music-service
 
@@ -50,3 +52,4 @@ networks:
 
 volumes:
   mongo_data:
+      driver: local

@@ -21,9 +21,9 @@ func (m Middleware) Auth() gin.HandlerFunc {
 
 		payload, err := m.jwtManager.VerifyToken(tokenString)
 		if err != nil {
-			response.Unauthorized(c)
-			c.Abort()
-			return
+			// response.Unauthorized(c)
+			// c.Abort()
+			// return
 		}
 
 		ctx := c.Request.Context()
