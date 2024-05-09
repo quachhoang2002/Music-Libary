@@ -33,35 +33,3 @@ func GetDefaultTimezone() *time.Location {
 	localTimeZone, _ := time.LoadLocation("Local")
 	return localTimeZone
 }
-
-func StartOfDay(t time.Time) time.Time {
-	return time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, GetDefaultTimezone())
-}
-
-func EndOfDay(t time.Time) time.Time {
-	return time.Date(t.Year(), t.Month(), t.Day(), 23, 59, 59, 0, GetDefaultTimezone())
-}
-
-func SetHour(t time.Time, hour int) time.Time {
-	return time.Date(t.Year(), t.Month(), t.Day(), hour, t.Minute(), t.Second(), 0, GetDefaultTimezone())
-}
-
-func SetMinute(t time.Time, minute int) time.Time {
-	return time.Date(t.Year(), t.Month(), t.Day(), t.Hour(), minute, t.Second(), 0, GetDefaultTimezone())
-}
-
-func DateTimeToInt(dt time.Time) int {
-	return int(dt.Unix())
-}
-
-func MillisecondsToTime(ms int64) time.Time {
-	seconds := ms / 1000
-	nanoseconds := (ms % 1000) * 1000000
-	return time.Unix(seconds, nanoseconds)
-}
-
-func MicrosecondsToTime(ms int64) time.Time {
-	seconds := ms / 1000000
-	nanoseconds := (ms % 1000000) * 1000
-	return time.Unix(seconds, nanoseconds)
-}

@@ -29,7 +29,7 @@
 
 ### Database setup
     -- In env have ENCRYPT_KEY , using is for encrypt uri string of database (key size = 32)    
-    -- mkdir ./mongo_data && sudo chmod 755 -R mongo_data
+    -- mkdir ./mongo_data && sudo chmod 755 -R mongo_data (this for mount data from docker-compose)
 
 ### 
     -- access to http://localhost:8088/swagger/index.html to see swagger
@@ -45,4 +45,12 @@
 [GIN-debug] PUT    /api/v1/music-tracks/:id  --> github.com/xuanhoang/music-library/internal/music/delivery/http.Handler.Update-fm (4 handlers)
 [GIN-debug] DELETE /api/v1/music-tracks/:id  --> github.com/xuanhoang/music-library/internal/music/delivery/http.Handler.Delete-fm (4 handlers)
 [GIN-debug] GET    /api/v1/music-tracks/:id/file --> github.com/xuanhoang/music-library/internal/music/delivery/http.Handler.GetFile-fm (4 handlers) // get file
+
+[GIN-debug] GET    /api/v1/playlists/:user_id --> github.com/xuanhoang/music-library/internal/playlist/delivery/http.Handler.List-fm (4 handlers)
+[GIN-debug] POST   /api/v1/playlists/:user_id --> github.com/xuanhoang/music-library/internal/playlist/delivery/http.Handler.Create-fm (4 handlers)
+[GIN-debug] PUT    /api/v1/playlists/:user_id/:id --> github.com/xuanhoang/music-library/internal/playlist/delivery/http.Handler.Update-fm (4 handlers)
+[GIN-debug] DELETE /api/v1/playlists/:user_id/:id --> github.com/xuanhoang/music-library/internal/playlist/delivery/http.Handler.Delete-fm (4 handlers)
+[GIN-debug] GET    /api/v1/playlists/:user_id/:id --> github.com/xuanhoang/music-library/internal/playlist/delivery/http.Handler.Detail-fm (4 handlers)
+[GIN-debug] POST   /api/v1/playlists/:user_id/:id/tracks/:track_id --> github.com/xuanhoang/music-library/internal/playlist/delivery/http.Handler.AddTrack-fm (4 handlers)
+[GIN-debug] DELETE /api/v1/playlists/:user_id/:id/tracks/:track_id --> github.com/xuanhoang/music-library/internal/playlist/delivery/http.Handler.RemoveTrack-fm (4 handlers)
 
