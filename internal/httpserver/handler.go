@@ -14,6 +14,10 @@ import (
 	musicRepo "github.com/xuanhoang/music-library/internal/music/repository/mongo"
 	musicUC "github.com/xuanhoang/music-library/internal/music/usecase"
 
+	playlistHTTP "github.com/xuanhoang/music-library/internal/playlist/delivery/http"
+	playlistRepo "github.com/xuanhoang/music-library/internal/playlist/repository/mongo"
+	playlistUC "github.com/xuanhoang/music-library/internal/playlist/usecase"
+
 	"github.com/xuanhoang/music-library/internal/middleware"
 )
 
@@ -25,28 +29,26 @@ func (srv HTTPServer) mapHandlers() error {
 		srv.l.Fatal(context.Background(), err)
 		return err
 	}
-	// Telegram
-	// chatIDs := telegram.ChatIDs{
-	// 	ReportBug: srv.telegram.ChatIDs.ReportBug,
-	// }
-	// teleBot := telegram.New(srv.telegram.BotKey, chatIDs)
-	// srv.gin.Use(middleware.Recovery(teleBot, srv.telegram.ChatIDs.ReportBug))
 
 	// Middleware
 	mw := middleware.New(srv.l, jwtManager)
 
 	// Repositories
 	musicRepo := musicRepo.New(srv.l, srv.database)
+	playlistRepo := playlistRepo.New(srv.l, srv.database)
 
 	// UseCases
 	musicUC := musicUC.New(srv.l, musicRepo)
+	playlistUC := playlistUC.New(srv.l, playlistRepo)
 
 	// Handlers
 	musicH := musicHTTP.New(srv.l, musicUC)
+	playlistH := playlistHTTP.New(srv.l, playlistUC)
 
 	// External routes
 	externalAPI := srv.gin.Group("/api/v1")
 	musicHTTP.MapMusicTrackRoutes(externalAPI.Group("/music-tracks"), musicH, mw)
+	playlistHTTP.MapMusicTrackRoutes(externalAPI.Group("/playlists"), playlistH, mw)
 
 	// Internal routes
 	// internalAPI := srv.gin.Group("/internal/api/v1")

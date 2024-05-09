@@ -33,3 +33,15 @@
 ### 
     -- access to http://localhost:8088/swagger/index.html to see swagger
     -- access to domain https://t.hoangdeptrai.online/musics/swagger/index.html
+
+
+
+### API LIST 
+[GIN-debug] GET    /swagger/*any             --> github.com/swaggo/gin-swagger.CustomWrapHandler.func1 (3 handlers)
+[GIN-debug] GET    /api/v1/music-tracks      --> github.com/xuanhoang/music-library/internal/music/delivery/http.Handler.List-fm (4 handlers)
+[GIN-debug] GET    /api/v1/music-tracks/:id  --> github.com/xuanhoang/music-library/internal/music/delivery/http.Handler.Detail-fm (4 handlers)
+[GIN-debug] POST   /api/v1/music-tracks      --> github.com/xuanhoang/music-library/internal/music/delivery/http.Handler.Create-fm (4 handlers)
+[GIN-debug] PUT    /api/v1/music-tracks/:id  --> github.com/xuanhoang/music-library/internal/music/delivery/http.Handler.Update-fm (4 handlers)
+[GIN-debug] DELETE /api/v1/music-tracks/:id  --> github.com/xuanhoang/music-library/internal/music/delivery/http.Handler.Delete-fm (4 handlers)
+[GIN-debug] GET    /api/v1/music-tracks/:id/file --> github.com/xuanhoang/music-library/internal/music/delivery/http.Handler.GetFile-fm (4 handlers) // get file
+

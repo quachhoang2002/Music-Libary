@@ -24,7 +24,7 @@ import (
 // @description Error codes: 1001 - 2000("User Error")
 
 // @version 1
-// @host https://t.hoangdeptrai.online/musics
+// @host t.hoangdeptrai.online/musics
 // @BasePath /
 // @schemes http
 func main() {
@@ -68,7 +68,6 @@ func main() {
 		Mode:         cfg.HTTPServer.Mode,
 		AMQPConn:     amqpConn,
 		Redis:        redisClient,
-		Microservice: httpserver.Microservice{},
 		Telegram: httpserver.TeleCredentials{
 			BotKey: cfg.Telegram.BotKey,
 			ChatIDs: httpserver.ChatIDs{

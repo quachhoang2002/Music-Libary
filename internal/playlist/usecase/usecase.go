@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/xuanhoang/music-library/internal/models"
-	"github.com/xuanhoang/music-library/internal/music/repository"
+	"github.com/xuanhoang/music-library/internal/playlist/repository"
 	"github.com/xuanhoang/music-library/pkg/file"
 	"github.com/xuanhoang/music-library/pkg/mongo"
 )

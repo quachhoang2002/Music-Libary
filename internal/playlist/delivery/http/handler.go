@@ -4,7 +4,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/xuanhoang/music-library/internal/music/usecase"
+	"github.com/xuanhoang/music-library/internal/playlist/usecase"
 	pkgErrors "github.com/xuanhoang/music-library/pkg/errors"
 	"github.com/xuanhoang/music-library/pkg/jwt"
 	"github.com/xuanhoang/music-library/pkg/paginator"

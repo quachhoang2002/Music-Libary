@@ -22,7 +22,6 @@ type HTTPServer struct {
 	mode         string
 	amqpConn     *rabbitmq.Connection
 	redis        redis.Client
-	microservice Microservice
 	telegram     TeleCredentials
 }
 type Config struct {
@@ -32,10 +31,7 @@ type Config struct {
 	Mode         string
 	AMQPConn     *rabbitmq.Connection
 	Redis        redis.Client
-	Microservice Microservice
 	Telegram     TeleCredentials
-}
-type Microservice struct {
 }
 
 type TeleCredentials struct {
@@ -63,7 +59,6 @@ func New(l pkgLog.Logger, cfg Config) *HTTPServer {
 		mode:         cfg.Mode,
 		amqpConn:     cfg.AMQPConn,
 		redis:        cfg.Redis,
-		microservice: cfg.Microservice,
 		telegram:     cfg.Telegram,
 	}
 }
