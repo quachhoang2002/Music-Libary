@@ -31,7 +31,7 @@
     -- In env have ENCRYPT_KEY , using is for encrypt uri string of database (key size = 32)    
     -- mkdir ./mongo_data && sudo chmod 755 -R mongo_data (this for mount data from docker-compose)
 
-### 
+### Swagger 
     -- access to http://localhost:8088/swagger/index.html to see swagger
     -- or access to domain https://t.hoangdeptrai.online/musics/swagger/index.html
 

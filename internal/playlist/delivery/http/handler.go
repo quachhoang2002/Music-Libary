@@ -157,14 +157,14 @@ func (h handler) Detail(c *gin.Context) {
 	}
 	sc := jwt.NewScope(payload)
 
-	playlist, track, err := h.uc.Detail(ctx, sc, c.Param("id"))
+	playlist, tracks, err := h.uc.Detail(ctx, sc, c.Param("id"))
 	if err != nil {
 		h.l.Warnf(ctx, "playlist.http.handler.Detail.uc.Detail: %v", err)
 		response.ErrorWithMap(c, err, mapError)
 		return
 	}
 
-	response.OK(c, newDetailPlaylistRes(playlist, track))
+	response.OK(c, newDetailPlaylistRes(playlist, tracks))
 }
 
 // @Summary List Playlist
@@ -246,7 +246,7 @@ func (h handler) List(c *gin.Context) {
 // @Produce json
 // @Success 200 {object}  response.Resp
 // @Failure 400 {object} response.Resp "Bad Request,Error..."
-// @Router /api/v1/playlists/{user_id}/{id}/track/{track_id} [POST]
+// @Router /api/v1/playlists/{user_id}/{id}/tracks/{track_id} [POST]
 func (h handler) AddTrack(c *gin.Context) {
 	ctx := c.Request.Context()
 
@@ -283,7 +283,7 @@ func (h handler) AddTrack(c *gin.Context) {
 // @Produce json
 // @Success 200 {object}  response.Resp
 // @Failure 400 {object} response.Resp "Bad Request,Error..."
-// @Router /api/v1/playlists/{user_id}/{id}/track/{track_id} [DELETE]
+// @Router /api/v1/playlists/{user_id}/{id}/tracks/{track_id} [DELETE]
 func (h handler) RemoveTrack(c *gin.Context) {
 	ctx := c.Request.Context()
 
