@@ -3,5 +3,6 @@ package usecase
 import "errors"
 
 var (
-	ErrMusicTrackNotFound = errors.New("track not found")
+	ErrPlaylistNotFound = errors.New("playlist not found")
+	ErrTrackNotFound    = errors.New("track not found")
 )

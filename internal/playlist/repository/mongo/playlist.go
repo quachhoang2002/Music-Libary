@@ -14,79 +14,93 @@ import (
 )
 
 const (
-	musicTrackCollection = "music_tracks"
+	musicTrackCollection = "playlists"
 )
 
-func (r implRepository) getTrackCollection() mongo.Collection {
+func (r implRepository) getCollection() mongo.Collection {
 	return r.database.Collection(musicTrackCollection)
 }
-func (repo implRepository) Create(ctx context.Context, sc models.Scope, opt repository.CreateOpt) (models.MusicTrack, error) {
-	c := repo.getTrackCollection()
+func (repo implRepository) Create(ctx context.Context, sc models.Scope, opt repository.CreateOpt) (models.Playlist, error) {
+	c := repo.getCollection()
 
-	track := models.MusicTrack{
-		ID:            primitive.NewObjectID(),
-		Title:         opt.Title,
-		Artist:        opt.Artist,
-		Album:         opt.Album,
-		Genre:         opt.Genre,
-		ReleaseYear:   opt.ReleaseYear,
-		Duration:      opt.Duration,
-		MP3FilePath:   opt.MP3FilePath,
-		CreatedUserID: mongo.ObjectIDFromHexOrNil(sc.UserID),
-		CreatedAt:     util.Now(),
-		UpdatedAt:     util.Now(),
+	track := models.Playlist{
+		ID:        primitive.NewObjectID(),
+		Name:      opt.Name,
+		UserID:    opt.UserID,
+		TrackIDs:  []primitive.ObjectID{},
+		CreatedAt: util.Now(),
+		UpdatedAt: util.Now(),
 	}
 
 	_, err := c.InsertOne(ctx, track)
 	if err != nil {
 		repo.l.Error(ctx, "music.repository.Create.InsertOne", err.Error())
-		return models.MusicTrack{}, err
+		return models.Playlist{}, err
 	}
 
 	return track, nil
 }
 
-func (r implRepository) Update(ctx context.Context, sc models.Scope, opt repository.UpdateOpt) (models.MusicTrack, error) {
-	c := r.getTrackCollection()
+func (r implRepository) Update(ctx context.Context, sc models.Scope, opt repository.UpdateOpt) error {
+	c := r.getCollection()
 
 	filter := mongo.BuildQueryWithSoftDelete(bson.M{})
 	filter["_id"] = mongo.ObjectIDFromHexOrNil(opt.ID)
+	filter["user_id"] = opt.UserID
 
-	track := models.MusicTrack{
-		Title:       opt.Data.Title,
-		Artist:      opt.Data.Artist,
-		Album:       opt.Data.Album,
-		Genre:       opt.Data.Genre,
-		ReleaseYear: opt.Data.ReleaseYear,
-		Duration:    opt.Data.Duration,
-		UpdatedAt:   util.Now(),
-		MP3FilePath: opt.Data.MP3FilePath,
+	update := bson.M{}
+	if opt.Data.Name != "" {
+		update["name"] = opt.Data.Name
 	}
 
-	_, err := c.UpdateOne(ctx, filter, bson.M{"$set": track})
+	_, err := c.UpdateOne(ctx, filter, bson.M{"$set": update})
 	if err != nil {
 		r.l.Error(ctx, "music.repository.Create.InsertOne", err.Error())
-		return models.MusicTrack{}, err
+		return err
 	}
 
-	return track, nil
+	return nil
 }
 
-func (r implRepository) List(ctx context.Context, sc models.Scope, opt repository.ListOpt) ([]models.MusicTrack, paginator.Paginator, error) {
-	c := r.getTrackCollection()
+func (r implRepository) AddTrack(ctx context.Context, sc models.Scope, playlistID string, trackID string) error {
+	c := r.getCollection()
 
+	filter := mongo.BuildQueryWithSoftDelete(bson.M{})
+	filter["_id"] = mongo.ObjectIDFromHexOrNil(playlistID)
+
+	update := bson.M{"$addToSet": bson.M{"track_ids": mongo.ObjectIDFromHexOrNil(trackID)}}
+	_, err := c.UpdateOne(ctx, filter, update)
+	if err != nil {
+		r.l.Error(ctx, "music.repository.AddTrack.UpdateOne", err.Error())
+		return err
+	}
+
+	return nil
+}
+
+// remove track
+func (r implRepository) RemoveTrack(ctx context.Context, sc models.Scope, playlistID string, trackID string) error {
+	c := r.getCollection()
+	filter := mongo.BuildQueryWithSoftDelete(bson.M{})
+	filter["_id"] = mongo.ObjectIDFromHexOrNil(playlistID)
+
+	update := bson.M{"$pull": bson.M{"track_ids": mongo.ObjectIDFromHexOrNil(trackID)}}
+	_, err := c.UpdateOne(ctx, filter, update)
+	if err != nil {
+		r.l.Error(ctx, "music.repository.RemoveTrack.UpdateOne", err.Error())
+		return err
+	}
+
+	return nil
+}
+
+func (r implRepository) List(ctx context.Context, sc models.Scope, opt repository.ListOpt) ([]models.Playlist, paginator.Paginator, error) {
+	c := r.getCollection()
 	filterQuery := mongo.BuildQueryWithSoftDelete(bson.M{})
-	filter := opt.Filter
-	if filter.Title != "" {
-		//query where like
-		filterQuery["title"] = primitive.Regex{Pattern: filter.Title, Options: "i"}
-	}
-	if filter.Artist != "" {
-		//query where like
-		filterQuery["artist"] = primitive.Regex{Pattern: filter.Artist, Options: "i"}
-	}
-	if filter.Album != "" {
-		filterQuery["album"] = filter.Album
+	filterQuery["user_id"] = opt.UserID
+
+	if len(opt.Filter.TrackIDs) > 0 {
+		filterQuery["track_ids"] = bson.M{"$in": mongo.ObjectIDsFromHex(opt.Filter.TrackIDs)}
 	}
 
 	cur, err := c.Find(ctx, filterQuery, options.Find().
@@ -101,8 +115,8 @@ func (r implRepository) List(ctx context.Context, sc models.Scope, opt repositor
 		return nil, paginator.Paginator{}, err
 	}
 
-	var tracks []models.MusicTrack
-	err = cur.All(ctx, &tracks)
+	var playlists []models.Playlist
+	err = cur.All(ctx, &playlists)
 	if err != nil {
 		r.l.Error(ctx, "music.repository.Get.All", err.Error())
 		return nil, paginator.Paginator{}, err
@@ -114,16 +128,16 @@ func (r implRepository) List(ctx context.Context, sc models.Scope, opt repositor
 		return nil, paginator.Paginator{}, err
 	}
 
-	return tracks, paginator.Paginator{
+	return playlists, paginator.Paginator{
 		Total:       total,
-		Count:       int64(len(tracks)),
+		Count:       int64(len(playlists)),
 		PerPage:     opt.PaginatorQuery.Limit,
 		CurrentPage: opt.PaginatorQuery.Page,
 	}, nil
 }
 
 func (r implRepository) Delete(ctx context.Context, sc models.Scope, id string) error {
-	c := r.getTrackCollection()
+	c := r.getCollection()
 
 	filter := mongo.BuildQueryWithSoftDelete(bson.M{})
 	filter["_id"] = mongo.ObjectIDFromHexOrNil(id)
@@ -137,18 +151,18 @@ func (r implRepository) Delete(ctx context.Context, sc models.Scope, id string) 
 	return nil
 }
 
-func (r implRepository) Detail(ctx context.Context, sc models.Scope, id string) (models.MusicTrack, error) {
-	c := r.getTrackCollection()
+func (r implRepository) Detail(ctx context.Context, sc models.Scope, id string) (models.Playlist, error) {
+	c := r.getCollection()
 
 	filter := mongo.BuildQueryWithSoftDelete(bson.M{})
 	filter["_id"] = mongo.ObjectIDFromHexOrNil(id)
 
-	var track models.MusicTrack
-	err := c.FindOne(ctx, filter).Decode(&track)
+	var playlist models.Playlist
+	err := c.FindOne(ctx, filter).Decode(&playlist)
 	if err != nil {
 		r.l.Error(ctx, "music.repository.Detail.FindOne", err.Error())
-		return models.MusicTrack{}, err
+		return models.Playlist{}, err
 	}
 
-	return track, nil
+	return playlist, nil
 }

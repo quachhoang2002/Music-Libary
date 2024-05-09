@@ -96,10 +96,14 @@ func (uc imlUseCase) List(ctx context.Context, sc models.Scope, ip ListInput) (L
 			Title:  ip.Filter.Title,
 			Artist: ip.Filter.Artist,
 			Album:  ip.Filter.Album,
+			IDs:    ip.Filter.IDs,
 		},
 		PaginatorQuery: ip.PaginatorQuery,
 	})
 	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return ListOutput{}, nil
+		}
 		uc.l.Error(ctx, "music.usecase.List.repo.List", err)
 		return ListOutput{}, err
 	}

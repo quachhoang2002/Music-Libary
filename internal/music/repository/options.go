@@ -3,6 +3,7 @@ package repository
 import "github.com/xuanhoang/music-library/pkg/paginator"
 
 type Filter struct {
+	IDs    []string
 	Title  string
 	Artist string
 	Album  string

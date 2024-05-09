@@ -2,126 +2,173 @@ package usecase
 
 import (
 	"context"
-	"os"
 
 	"github.com/xuanhoang/music-library/internal/models"
 	"github.com/xuanhoang/music-library/internal/playlist/repository"
-	"github.com/xuanhoang/music-library/pkg/file"
 	"github.com/xuanhoang/music-library/pkg/mongo"
+	"github.com/xuanhoang/music-library/pkg/paginator"
+
+	musicUC "github.com/xuanhoang/music-library/internal/music/usecase"
 )
 
-func (uc imlUseCase) Create(ctx context.Context, sc models.Scope, ip CreateInput) (models.MusicTrack, error) {
-	//create file
-	filePath, err := file.SaveFile(ip.MP3File, fileStorePath)
-	if err != nil {
-		uc.l.Error(ctx, "music.usecase.Create.file.SaveFile", err)
-		return models.MusicTrack{}, err
-	}
-
-	track, err := uc.repo.Create(ctx, sc, repository.CreateOpt{
-		Title:       ip.Title,
-		Artist:      ip.Artist,
-		Album:       ip.Album,
-		Genre:       ip.Genre,
-		ReleaseYear: ip.ReleaseYear,
-		Duration:    ip.Duration,
-		MP3FilePath: filePath,
+func (uc imlUseCase) Create(ctx context.Context, sc models.Scope, ip CreateInput) (models.Playlist, error) {
+	playlist, err := uc.repo.Create(ctx, sc, repository.CreateOpt{
+		Name:   ip.Name,
+		UserID: ip.UserID,
 	})
 	if err != nil {
-		uc.l.Error(ctx, "music.usecase.Create.repo.Create", err)
-		return models.MusicTrack{}, err
+		uc.l.Error(ctx, "playlist.usecase.Create.repo.Create", err)
+		return models.Playlist{}, err
 	}
-	return track, nil
+	return playlist, nil
 }
 
-func (uc imlUseCase) Update(ctx context.Context, sc models.Scope, ip UpdateInput) (models.MusicTrack, error) {
-	//create file
-	filePath, err := file.SaveFile(ip.Data.MP3File, fileStorePath)
-	if err != nil {
-		uc.l.Error(ctx, "music.usecase.Create.file.SaveFile", err)
-		return models.MusicTrack{}, err
-	}
-
-	track, err := uc.repo.Update(ctx, sc, repository.UpdateOpt{
-		ID: ip.ID,
+// Err : ErrPlaylistNotFound
+func (uc imlUseCase) Update(ctx context.Context, sc models.Scope, ip UpdateInput) (models.Playlist, error) {
+	err := uc.repo.Update(ctx, sc, repository.UpdateOpt{
+		ID:     ip.ID,
+		UserID: ip.UserID,
 		Data: repository.UpdateData{
-			Title:       ip.Data.Title,
-			Artist:      ip.Data.Artist,
-			Album:       ip.Data.Album,
-			Genre:       ip.Data.Genre,
-			ReleaseYear: ip.Data.ReleaseYear,
-			Duration:    ip.Data.Duration,
-			MP3FilePath: filePath,
+			Name: ip.Data.Name,
 		},
 	})
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
-			return models.MusicTrack{}, ErrMusicTrackNotFound
+			return models.Playlist{}, ErrPlaylistNotFound
 		}
-		uc.l.Error(ctx, "music.usecase.Update.repo.Update", err)
-		return models.MusicTrack{}, err
+		uc.l.Error(ctx, "playlist.usecase.Update.repo.Update", err)
+		return models.Playlist{}, err
 	}
-	return track, nil
+
+	playlist, err := uc.repo.Detail(ctx, sc, ip.ID)
+	if err != nil {
+		uc.l.Error(ctx, "playlist.usecase.Update.repo.Detail", err)
+		return models.Playlist{}, err
+	}
+
+	return playlist, nil
 }
 
-// Err : ErrMusicTrackNotFound
+// Err : ErrPlaylistNotFound
 func (uc imlUseCase) Delete(ctx context.Context, sc models.Scope, id string) error {
 	err := uc.repo.Delete(ctx, sc, id)
 	if err != nil {
-		uc.l.Error(ctx, "music.usecase.Delete.repo.Delete", err)
+		uc.l.Error(ctx, "playlist.usecase.Delete.repo.Delete", err)
 		if err == mongo.ErrNoDocuments {
-			return ErrMusicTrackNotFound
+			return ErrPlaylistNotFound
 		}
 		return err
 	}
 	return nil
 }
 
-// Err : ErrMusicTrackNotFound
-func (uc imlUseCase) Detail(ctx context.Context, sc models.Scope, id string) (models.MusicTrack, error) {
-	track, err := uc.repo.Detail(ctx, sc, id)
+// Err : ErrPlaylistNotFound
+func (uc imlUseCase) Detail(ctx context.Context, sc models.Scope, id string) (models.Playlist, []models.MusicTrack, error) {
+	playlist, err := uc.repo.Detail(ctx, sc, id)
 	if err != nil {
-		uc.l.Error(ctx, "music.usecase.Detail.repo.Detail", err)
+		uc.l.Error(ctx, "playlist.usecase.Detail.repo.Detail", err)
 		if err == mongo.ErrNoDocuments {
-			return models.MusicTrack{}, ErrMusicTrackNotFound
+			return models.Playlist{}, []models.MusicTrack{}, ErrPlaylistNotFound
 		}
-		return models.MusicTrack{}, err
+		return models.Playlist{}, []models.MusicTrack{}, err
 	}
-	return track, nil
+
+	var tracks []models.MusicTrack
+	if len(playlist.TrackIDs) > 0 {
+		out, err := uc.musicUC.List(ctx, models.Scope{}, musicUC.ListInput{
+			PaginatorQuery: paginator.PaginatorQuery{
+				Limit: 1000,
+				Page:  1,
+			},
+			Filter: musicUC.Filter{
+				IDs: mongo.ObjectIDsToHex(playlist.TrackIDs),
+			},
+		})
+		if err != nil {
+			uc.l.Error(ctx, "playlist.usecase.Detail.musicUC.List", err)
+			return models.Playlist{}, []models.MusicTrack{}, err
+		}
+		tracks = out.Tracks
+	}
+
+	return playlist, tracks, nil
 }
 
 func (uc imlUseCase) List(ctx context.Context, sc models.Scope, ip ListInput) (ListOutput, error) {
-	tracks, pag, err := uc.repo.List(ctx, sc, repository.ListOpt{
+	trackIDs := []string{}
+	if !ip.TrackFilter.IsEmpty() {
+		out, err := uc.musicUC.List(ctx, models.Scope{}, musicUC.ListInput{
+			PaginatorQuery: paginator.PaginatorQuery{
+				Limit: 1000,
+				Page:  1,
+			},
+			Filter: musicUC.Filter{
+				Title:  ip.TrackFilter.Title,
+				Artist: ip.TrackFilter.Artist,
+				Album:  ip.TrackFilter.Album,
+			},
+		})
+		if err != nil {
+			uc.l.Error(ctx, "playlist.usecase.List.musicUC.List", err)
+			return ListOutput{}, err
+		}
+
+		if len(out.Tracks) == 0 {
+			return ListOutput{}, nil
+		}
+
+		for _, track := range out.Tracks {
+			trackIDs = append(trackIDs, track.ID.Hex())
+		}
+	}
+
+	playlists, pag, err := uc.repo.List(ctx, sc, repository.ListOpt{
 		Filter: repository.Filter{
-			Title:  ip.Filter.Title,
-			Artist: ip.Filter.Artist,
-			Album:  ip.Filter.Album,
+			TrackIDs: trackIDs,
 		},
 		PaginatorQuery: ip.PaginatorQuery,
+		UserID:         ip.UserID,
 	})
 	if err != nil {
-		uc.l.Error(ctx, "music.usecase.List.repo.List", err)
+		uc.l.Error(ctx, "playlist.usecase.List.repo.List", err)
 		return ListOutput{}, err
 	}
 	return ListOutput{
-		Tracks:    tracks,
+		Playlist:  playlists,
 		Pagiantor: pag,
 	}, nil
 }
 
-func (uc imlUseCase) GetFile(ctx context.Context, sc models.Scope, id string) (*os.File, error) {
-	track, err := uc.repo.Detail(ctx, sc, id)
+// Err : ErrTrackNotFound, ErrPlaylistNotFound
+func (uc imlUseCase) AddTrack(ctx context.Context, sc models.Scope, playlistID string, trackID string) error {
+	if !uc.isTrackExist(ctx, sc, trackID) {
+		return ErrTrackNotFound
+	}
+
+	err := uc.repo.AddTrack(ctx, sc, playlistID, trackID)
 	if err != nil {
-		uc.l.Error(ctx, "music.usecase.GetFile.repo.Detail", err)
+		uc.l.Error(ctx, "playlist.usecase.AddTrack.repo.AddTrack", err)
 		if err == mongo.ErrNoDocuments {
-			return nil, ErrMusicTrackNotFound
+			return ErrPlaylistNotFound
 		}
-		return nil, err
+		return err
 	}
-	file, err := os.Open(track.MP3FilePath)
+	return nil
+}
+
+// Err : ErrTrackNotFound, ErrPlaylistNotFound
+func (uc imlUseCase) RemoveTrack(ctx context.Context, sc models.Scope, playlistID string, trackID string) error {
+	if !uc.isTrackExist(ctx, sc, trackID) {
+		return ErrTrackNotFound
+	}
+
+	err := uc.repo.RemoveTrack(ctx, sc, playlistID, trackID)
 	if err != nil {
-		uc.l.Error(ctx, "music.usecase.GetFile.os.Open", err)
-		return nil, err
+		uc.l.Error(ctx, "playlist.usecase.RemoveTrack.repo.RemoveTrack", err)
+		if err == mongo.ErrNoDocuments {
+			return ErrPlaylistNotFound
+		}
+		return err
 	}
-	return file, nil
+	return nil
 }

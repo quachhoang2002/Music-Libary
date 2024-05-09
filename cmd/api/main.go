@@ -12,21 +12,28 @@ import (
 
 // @title Mucsic Library API
 // @description This is the API documentation for the Music Library.
-// @description Error codes: 0000 - 1000("Music Track Error")
-// @description `0001`(Wrong pagination query)
-// @description `0002`(Invalid body)
-// @description `0003`(Invalid form data)
-// @description `0004`(Invalid params query)
-// @description `0005`(Invalid validation)
-// @description `0006`(Unauthorized)
-// @description `0007`(Music track not found)
-
-// @description Error codes: 1001 - 2000("User Error")
+// @description Error codes: 000 - 100("Music Track Error")
+// @description `1`(Wrong pagination query)
+// @description `2`(Invalid body)
+// @description `3`(Invalid form data)
+// @description `4`(Invalid params query)
+// @description `5`(Invalid validation)
+// @description `6`(Unauthorized)
+// @description `7`(Music track not found)
+// @description Error codes: 101 - 200("Playlist Error")
+// @description `101`(Wrong pagination query)
+// @description `102`(Invalid body)
+// @description `103`(Invalid form data)
+// @description `104`(Invalid params query)
+// @description `105`(Invalid validation)
+// @description `106`(Unauthorized)
+// @description `107`(Playlist not found)
+// @description `108`(Music track not found)
 
 // @version 1
 // @host t.hoangdeptrai.online/musics
 // @BasePath /
-// @schemes http
+// @schemes https
 func main() {
 	// Load config
 	cfg, err := config.Load()

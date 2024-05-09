@@ -9,28 +9,26 @@ import (
 )
 
 type detailTrackRes struct {
-	ID            string `json:"_id,omitempty"`
-	Title         string `json:"title"`
-	Artist        string `json:"artist"`
-	Album         string `json:"album"`
-	Genre         string `json:"genre"`
-	ReleaseYear   int    `json:"release_year"`
-	Duration      int    `json:"duration"`
-	MP3FilePath   string `json:"mp3_file_path"`
-	CreatedUserID string `json:"created_user_id"`
+	ID          string `json:"_id,omitempty"`
+	Title       string `json:"title"`
+	Artist      string `json:"artist"`
+	Album       string `json:"album"`
+	Genre       string `json:"genre"`
+	ReleaseYear int    `json:"release_year"`
+	Duration    int    `json:"duration"`
+	MP3FilePath string `json:"mp3_file_path"`
 }
 
 func newDetailTrackRes(mt models.MusicTrack) detailTrackRes {
 	return detailTrackRes{
-		ID:            mt.ID.Hex(),
-		Title:         mt.Title,
-		Artist:        mt.Artist,
-		Album:         mt.Album,
-		Genre:         mt.Genre,
-		ReleaseYear:   mt.ReleaseYear,
-		Duration:      mt.Duration,
-		MP3FilePath:   mt.MP3FilePath,
-		CreatedUserID: mt.CreatedUserID.Hex(),
+		ID:          mt.ID.Hex(),
+		Title:       mt.Title,
+		Artist:      mt.Artist,
+		Album:       mt.Album,
+		Genre:       mt.Genre,
+		ReleaseYear: mt.ReleaseYear,
+		Duration:    mt.Duration,
+		MP3FilePath: mt.MP3FilePath,
 	}
 }
 

@@ -8,6 +8,7 @@ import (
 )
 
 type Filter struct {
+	IDs    []string
 	Title  string
 	Artist string
 	Album  string
@@ -20,7 +21,7 @@ type CreateInput struct {
 	Genre       string
 	ReleaseYear int
 	Duration    int
-	MP3File    *multipart.FileHeader
+	MP3File     *multipart.FileHeader
 }
 
 // update

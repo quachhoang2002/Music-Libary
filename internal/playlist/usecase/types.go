@@ -1,51 +1,44 @@
 package usecase
 
 import (
-	"mime/multipart"
-
 	"github.com/xuanhoang/music-library/internal/models"
 	"github.com/xuanhoang/music-library/pkg/paginator"
 )
 
-type Filter struct {
+type TrackFilter struct {
 	Title  string
 	Artist string
 	Album  string
 }
 
+func (f TrackFilter) IsEmpty() bool {
+	return f.Title == "" && f.Artist == "" && f.Album == ""
+}
+
 type CreateInput struct {
-	Title       string
-	Artist      string
-	Album       string
-	Genre       string
-	ReleaseYear int
-	Duration    int
-	MP3File    *multipart.FileHeader
+	Name   string
+	UserID string
 }
 
 // update
 type UpdateInput struct {
-	ID   string
-	Data UpdateData
+	ID     string
+	UserID string
+	Data   UpdateData
 }
 
 type UpdateData struct {
-	Title       string
-	Artist      string
-	Album       string
-	Genre       string
-	ReleaseYear int
-	Duration    int // Duration in seconds
-	MP3File     *multipart.FileHeader
+	Name string
 }
 
 // List
 type ListInput struct {
-	Filter         Filter
+	TrackFilter    TrackFilter
+	UserID         string
 	PaginatorQuery paginator.PaginatorQuery
 }
 
 type ListOutput struct {
-	Tracks    []models.MusicTrack
+	Playlist  []models.Playlist
 	Pagiantor paginator.Paginator
 }

@@ -39,7 +39,7 @@ func (srv HTTPServer) mapHandlers() error {
 
 	// UseCases
 	musicUC := musicUC.New(srv.l, musicRepo)
-	playlistUC := playlistUC.New(srv.l, playlistRepo)
+	playlistUC := playlistUC.New(srv.l, playlistRepo, musicUC)
 
 	// Handlers
 	musicH := musicHTTP.New(srv.l, musicUC)
@@ -48,7 +48,7 @@ func (srv HTTPServer) mapHandlers() error {
 	// External routes
 	externalAPI := srv.gin.Group("/api/v1")
 	musicHTTP.MapMusicTrackRoutes(externalAPI.Group("/music-tracks"), musicH, mw)
-	playlistHTTP.MapMusicTrackRoutes(externalAPI.Group("/playlists"), playlistH, mw)
+	playlistHTTP.MapMusicPlaylistRoutes(externalAPI.Group("/playlists"), playlistH, mw)
 
 	// Internal routes
 	// internalAPI := srv.gin.Group("/internal/api/v1")

@@ -251,7 +251,7 @@ func (h handler) List(c *gin.Context) {
 // @Tags Music Track
 // @Accept json
 // @Produce json
-// @Success 200 {object}
+// @Success 200 {file} file "Music track file"
 // @Failure 400 {object} response.Resp "Bad Request,Error..."
 // @Router /api/v1/music-tracks/{id}/file [GET]
 func (h handler) GetFile(c *gin.Context) {

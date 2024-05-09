@@ -12,7 +12,8 @@ type Handler interface {
 	Update(c *gin.Context)
 	Delete(c *gin.Context)
 	Detail(c *gin.Context)
-	GetFile(c *gin.Context)
+	AddTrack(c *gin.Context)
+	RemoveTrack(c *gin.Context)
 }
 
 type handler struct {

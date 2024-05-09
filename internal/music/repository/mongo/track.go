@@ -89,6 +89,10 @@ func (r implRepository) List(ctx context.Context, sc models.Scope, opt repositor
 		filterQuery["album"] = filter.Album
 	}
 
+	if len(filter.IDs) > 0 {
+		filterQuery["_id"] = bson.M{"$in": mongo.ObjectIDsFromHex(filter.IDs)}
+	}
+
 	cur, err := c.Find(ctx, filterQuery, options.Find().
 		SetSkip(opt.PaginatorQuery.Offset()).
 		SetLimit(opt.PaginatorQuery.Limit).

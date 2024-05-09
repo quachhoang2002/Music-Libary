@@ -5,13 +5,17 @@ import (
 	"github.com/xuanhoang/music-library/internal/middleware"
 )
 
-func MapMusicTrackRoutes(r *gin.RouterGroup, h Handler, mw middleware.Middleware) {
+func MapMusicPlaylistRoutes(r *gin.RouterGroup, h Handler, mw middleware.Middleware) {
 	r.Use(mw.Auth())
 
-	r.GET("", h.List)
-	r.GET("/:id", h.Detail)
-	r.POST("", h.Create)
-	r.PUT("/:id", h.Update)
-	r.DELETE("/:id", h.Delete)
-	r.GET("/:id/file", h.GetFile)
+	groupRouter := r.Group("/:user_id")
+
+	groupRouter.GET("", h.List)
+	groupRouter.POST("", h.Create)
+	groupRouter.PUT("/:id", h.Update)
+	groupRouter.DELETE("/:id", h.Delete)
+	groupRouter.GET("/:id", h.Detail)
+
+	groupRouter.POST("/:id/tracks/:track_id", h.AddTrack)
+	groupRouter.DELETE("/:id/tracks/:track_id", h.RemoveTrack)
 }

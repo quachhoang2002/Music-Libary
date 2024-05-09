@@ -1,131 +1,91 @@
 package http
 
 import (
-	"mime/multipart"
-
 	"github.com/xuanhoang/music-library/internal/models"
 	"github.com/xuanhoang/music-library/internal/playlist/usecase"
 	"github.com/xuanhoang/music-library/pkg/paginator"
 )
 
-type detailTrackRes struct {
-	ID            string `json:"_id,omitempty"`
-	Title         string `json:"title"`
-	Artist        string `json:"artist"`
-	Album         string `json:"album"`
-	Genre         string `json:"genre"`
-	ReleaseYear   int    `json:"release_year"`
-	Duration      int    `json:"duration"`
-	MP3FilePath   string `json:"mp3_file_path"`
-	CreatedUserID string `json:"created_user_id"`
+type detailPlaylistRes struct {
+	ID     string           `json:"_id,omitempty"`
+	Name   string           `json:"name"`
+	Tracks []musicTrackItem `json:"tracks"`
 }
 
-func newDetailTrackRes(mt models.MusicTrack) detailTrackRes {
-	return detailTrackRes{
-		ID:            mt.ID.Hex(),
-		Title:         mt.Title,
-		Artist:        mt.Artist,
-		Album:         mt.Album,
-		Genre:         mt.Genre,
-		ReleaseYear:   mt.ReleaseYear,
-		Duration:      mt.Duration,
-		MP3FilePath:   mt.MP3FilePath,
-		CreatedUserID: mt.CreatedUserID.Hex(),
+func newDetailPlaylistRes(playlist models.Playlist, tracks []models.MusicTrack) detailPlaylistRes {
+	trackItems := make([]musicTrackItem, 0, len(tracks))
+	for _, v := range tracks {
+		trackItems = append(trackItems, newMusicTrackItem(v))
+	}
+
+	return detailPlaylistRes{
+		ID:     playlist.ID.Hex(),
+		Name:   playlist.Name,
+		Tracks: trackItems,
 	}
 }
 
 // -- create
-type createMusicTrackReq struct {
-	Title       string                `form:"title" binding:"required"`
-	Artist      string                `form:"artist" binding:"required"`
-	Album       string                `form:"album" binding:"required"`
-	Genre       string                `form:"genre" binding:"required"`
-	ReleaseYear int                   `form:"release_year" binding:"required"`
-	Duration    int                   `form:"duration" binding:"required"`
-	MP3File     *multipart.FileHeader `form:"mp3_file" binding:"required"`
+type createPlaylistReq struct {
+	Name string `json:"name" binding:"required"`
 }
 
-func (r createMusicTrackReq) toInput() usecase.CreateInput {
+func (r createPlaylistReq) toInput(userID string) usecase.CreateInput {
 	return usecase.CreateInput{
-		Title:       r.Title,
-		Artist:      r.Artist,
-		Album:       r.Album,
-		Genre:       r.Genre,
-		ReleaseYear: r.ReleaseYear,
-		Duration:    r.Duration,
-		MP3File:     r.MP3File,
+		Name:   r.Name,
+		UserID: userID,
 	}
 }
 
 // -- update
-type updateMusicTrackReq struct {
-	ID          string                `uri:"id"`
-	Name        string                `form:"name" binding:"required"`
-	Aritst      string                `form:"artist" binding:"required"`
-	Album       string                `form:"album" binding:"required"`
-	Genre       string                `form:"genre" binding:"required"`
-	ReleaseYear int                   `form:"release_year" binding:"required"`
-	Duration    int                   `form:"duration" binding:"required"`
-	MP3File     *multipart.FileHeader `form:"mp3_files" binding:"required"`
+type updatePlayListReq struct {
+	Name string `json:"name" binding:"required"`
 }
 
-func (r updateMusicTrackReq) toInput() usecase.UpdateInput {
+func (r updatePlayListReq) toInput(id string, userID string) usecase.UpdateInput {
 	return usecase.UpdateInput{
-		ID: r.ID,
+		ID:     id,
+		UserID: userID,
 		Data: usecase.UpdateData{
-			Title:       r.Name,
-			Artist:      r.Aritst,
-			Album:       r.Album,
-			Genre:       r.Genre,
-			ReleaseYear: r.ReleaseYear,
-			Duration:    r.Duration,
-			MP3File:     r.MP3File,
+			Name: r.Name,
 		},
 	}
 }
 
 // -- list
-type listMusicTrackReq struct {
+type listPlaylistReq struct {
 	Title  string `form:"title"`
 	Artist string `form:"artist"`
 	Album  string `form:"album"`
 }
 
-type listMusicTrackResp struct {
-	Data []itemMusicTrackResp        `json:"data"`
+type listPlaylistResp struct {
+	Data []itemPlaylistResp          `json:"data"`
 	Meta paginator.PaginatorResponse `json:"meta"`
 }
 
-func newListTrackResp(lo usecase.ListOutput) listMusicTrackResp {
-	items := make([]itemMusicTrackResp, 0, len(lo.Tracks))
-	for _, v := range lo.Tracks {
-		items = append(items, newItemMusicTrackResp(v))
+func newPlaylistsResp(lo usecase.ListOutput) listPlaylistResp {
+	items := make([]itemPlaylistResp, 0, len(lo.Playlist))
+	for _, v := range lo.Playlist {
+		items = append(items, newItemPlaylistResp(v))
 	}
 
-	return listMusicTrackResp{
+	return listPlaylistResp{
 		Data: items,
 		Meta: lo.Pagiantor.ToResponse(),
 	}
 }
 
-type itemMusicTrackResp struct {
-	ID          string `json:"_id,omitempty"`
-	Title       string `json:"title"`
-	Artist      string `json:"artist"`
-	Album       string `json:"album"`
-	Genre       string `json:"genre"`
-	ReleaseYear int    `json:"release_year"`
-	Duration    int    `json:"duration"`
+type itemPlaylistResp struct {
+	ID     string `json:"_id,omitempty"`
+	Name   string `json:"name"`
+	UserID string `json:"user_id"`
 }
 
-func newItemMusicTrackResp(mt models.MusicTrack) itemMusicTrackResp {
-	return itemMusicTrackResp{
-		ID:          mt.ID.Hex(),
-		Title:       mt.Title,
-		Artist:      mt.Artist,
-		Album:       mt.Album,
-		Genre:       mt.Genre,
-		ReleaseYear: mt.ReleaseYear,
-		Duration:    mt.Duration,
+func newItemPlaylistResp(mt models.Playlist) itemPlaylistResp {
+	return itemPlaylistResp{
+		ID:     mt.ID.Hex(),
+		Name:   mt.Name,
+		UserID: mt.UserID,
 	}
 }
