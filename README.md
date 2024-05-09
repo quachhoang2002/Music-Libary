@@ -33,7 +33,7 @@
 
 ### 
     -- access to http://localhost:8088/swagger/index.html to see swagger
-    -- access to domain https://t.hoangdeptrai.online/musics/swagger/index.html
+    -- or access to domain https://t.hoangdeptrai.online/musics/swagger/index.html
 
 
 
