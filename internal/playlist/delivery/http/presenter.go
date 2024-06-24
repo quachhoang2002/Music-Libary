@@ -1,9 +1,9 @@
 package http
 
 import (
-	"github.com/xuanhoang/music-library/internal/models"
-	"github.com/xuanhoang/music-library/internal/playlist/usecase"
-	"github.com/xuanhoang/music-library/pkg/paginator"
+	"github.com/quachhoang2002/Music-Library/internal/models"
+	"github.com/quachhoang2002/Music-Library/internal/playlist/usecase"
+	"github.com/quachhoang2002/Music-Library/pkg/paginator"
 )
 
 type detailPlaylistRes struct {

@@ -1,6 +1,6 @@
 package repository
 
-import "github.com/xuanhoang/music-library/pkg/paginator"
+import "github.com/quachhoang2002/Music-Library/pkg/paginator"
 
 type Filter struct {
 	IDs    []string

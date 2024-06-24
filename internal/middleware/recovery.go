@@ -4,8 +4,8 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
-	"github.com/xuanhoang/music-library/pkg/response"
-	"github.com/xuanhoang/music-library/pkg/telegram"
+	"github.com/quachhoang2002/Music-Library/pkg/response"
+	"github.com/quachhoang2002/Music-Library/pkg/telegram"
 )
 
 func Recovery(t telegram.Telegram, chatBugID int64) gin.HandlerFunc {

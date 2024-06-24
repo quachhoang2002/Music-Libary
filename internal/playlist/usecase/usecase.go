@@ -3,12 +3,12 @@ package usecase
 import (
 	"context"
 
-	"github.com/xuanhoang/music-library/internal/models"
-	"github.com/xuanhoang/music-library/internal/playlist/repository"
-	"github.com/xuanhoang/music-library/pkg/mongo"
-	"github.com/xuanhoang/music-library/pkg/paginator"
+	"github.com/quachhoang2002/Music-Library/internal/models"
+	"github.com/quachhoang2002/Music-Library/internal/playlist/repository"
+	"github.com/quachhoang2002/Music-Library/pkg/mongo"
+	"github.com/quachhoang2002/Music-Library/pkg/paginator"
 
-	musicUC "github.com/xuanhoang/music-library/internal/music/usecase"
+	musicUC "github.com/quachhoang2002/Music-Library/internal/music/usecase"
 )
 
 func (uc imlUseCase) Create(ctx context.Context, sc models.Scope, ip CreateInput) (models.Playlist, error) {

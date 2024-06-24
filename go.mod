@@ -1,4 +1,4 @@
-module github.com/xuanhoang/music-library
+module github.com/quachhoang2002/Music-Library
 
 go 1.21.8
 

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/xuanhoang/music-library/config"
-	"github.com/xuanhoang/music-library/pkg/redis"
+	"github.com/quachhoang2002/Music-Library/config"
+	"github.com/quachhoang2002/Music-Library/pkg/redis"
 )
 
 func Connect(redisConfig config.RedisConfig) (redis.Client, error) {

@@ -2,11 +2,11 @@ package httpserver
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/xuanhoang/music-library/pkg/mongo"
-	"github.com/xuanhoang/music-library/pkg/rabbitmq"
-	"github.com/xuanhoang/music-library/pkg/redis"
+	"github.com/quachhoang2002/Music-Library/pkg/mongo"
+	"github.com/quachhoang2002/Music-Library/pkg/rabbitmq"
+	"github.com/quachhoang2002/Music-Library/pkg/redis"
 
-	pkgLog "github.com/xuanhoang/music-library/pkg/log"
+	pkgLog "github.com/quachhoang2002/Music-Library/pkg/log"
 )
 
 const productionMode = "production"

@@ -39,18 +39,18 @@
 
 ### API LIST 
 [GIN-debug] GET    /swagger/*any             --> github.com/swaggo/gin-swagger.CustomWrapHandler.func1 (3 handlers)
-[GIN-debug] GET    /api/v1/music-tracks      --> github.com/xuanhoang/music-library/internal/music/delivery/http.Handler.List-fm (4 handlers)
-[GIN-debug] GET    /api/v1/music-tracks/:id  --> github.com/xuanhoang/music-library/internal/music/delivery/http.Handler.Detail-fm (4 handlers)
-[GIN-debug] POST   /api/v1/music-tracks      --> github.com/xuanhoang/music-library/internal/music/delivery/http.Handler.Create-fm (4 handlers)
-[GIN-debug] PUT    /api/v1/music-tracks/:id  --> github.com/xuanhoang/music-library/internal/music/delivery/http.Handler.Update-fm (4 handlers)
-[GIN-debug] DELETE /api/v1/music-tracks/:id  --> github.com/xuanhoang/music-library/internal/music/delivery/http.Handler.Delete-fm (4 handlers)
-[GIN-debug] GET    /api/v1/music-tracks/:id/file --> github.com/xuanhoang/music-library/internal/music/delivery/http.Handler.GetFile-fm (4 handlers) // get file
+[GIN-debug] GET    /api/v1/music-tracks      --> github.com/quachhoang2002/Music-Library/internal/music/delivery/http.Handler.List-fm (4 handlers)
+[GIN-debug] GET    /api/v1/music-tracks/:id  --> github.com/quachhoang2002/Music-Library/internal/music/delivery/http.Handler.Detail-fm (4 handlers)
+[GIN-debug] POST   /api/v1/music-tracks      --> github.com/quachhoang2002/Music-Library/internal/music/delivery/http.Handler.Create-fm (4 handlers)
+[GIN-debug] PUT    /api/v1/music-tracks/:id  --> github.com/quachhoang2002/Music-Library/internal/music/delivery/http.Handler.Update-fm (4 handlers)
+[GIN-debug] DELETE /api/v1/music-tracks/:id  --> github.com/quachhoang2002/Music-Library/internal/music/delivery/http.Handler.Delete-fm (4 handlers)
+[GIN-debug] GET    /api/v1/music-tracks/:id/file --> github.com/quachhoang2002/Music-Library/internal/music/delivery/http.Handler.GetFile-fm (4 handlers) // get file
 
-[GIN-debug] GET    /api/v1/playlists/:user_id --> github.com/xuanhoang/music-library/internal/playlist/delivery/http.Handler.List-fm (4 handlers)
-[GIN-debug] POST   /api/v1/playlists/:user_id --> github.com/xuanhoang/music-library/internal/playlist/delivery/http.Handler.Create-fm (4 handlers)
-[GIN-debug] PUT    /api/v1/playlists/:user_id/:id --> github.com/xuanhoang/music-library/internal/playlist/delivery/http.Handler.Update-fm (4 handlers)
-[GIN-debug] DELETE /api/v1/playlists/:user_id/:id --> github.com/xuanhoang/music-library/internal/playlist/delivery/http.Handler.Delete-fm (4 handlers)
-[GIN-debug] GET    /api/v1/playlists/:user_id/:id --> github.com/xuanhoang/music-library/internal/playlist/delivery/http.Handler.Detail-fm (4 handlers)
-[GIN-debug] POST   /api/v1/playlists/:user_id/:id/tracks/:track_id --> github.com/xuanhoang/music-library/internal/playlist/delivery/http.Handler.AddTrack-fm (4 handlers)
-[GIN-debug] DELETE /api/v1/playlists/:user_id/:id/tracks/:track_id --> github.com/xuanhoang/music-library/internal/playlist/delivery/http.Handler.RemoveTrack-fm (4 handlers)
+[GIN-debug] GET    /api/v1/playlists/:user_id --> github.com/quachhoang2002/Music-Library/internal/playlist/delivery/http.Handler.List-fm (4 handlers)
+[GIN-debug] POST   /api/v1/playlists/:user_id --> github.com/quachhoang2002/Music-Library/internal/playlist/delivery/http.Handler.Create-fm (4 handlers)
+[GIN-debug] PUT    /api/v1/playlists/:user_id/:id --> github.com/quachhoang2002/Music-Library/internal/playlist/delivery/http.Handler.Update-fm (4 handlers)
+[GIN-debug] DELETE /api/v1/playlists/:user_id/:id --> github.com/quachhoang2002/Music-Library/internal/playlist/delivery/http.Handler.Delete-fm (4 handlers)
+[GIN-debug] GET    /api/v1/playlists/:user_id/:id --> github.com/quachhoang2002/Music-Library/internal/playlist/delivery/http.Handler.Detail-fm (4 handlers)
+[GIN-debug] POST   /api/v1/playlists/:user_id/:id/tracks/:track_id --> github.com/quachhoang2002/Music-Library/internal/playlist/delivery/http.Handler.AddTrack-fm (4 handlers)
+[GIN-debug] DELETE /api/v1/playlists/:user_id/:id/tracks/:track_id --> github.com/quachhoang2002/Music-Library/internal/playlist/delivery/http.Handler.RemoveTrack-fm (4 handlers)
 

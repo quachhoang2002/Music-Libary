@@ -1,13 +1,13 @@
 package main
 
 import (
-	"github.com/xuanhoang/music-library/config"
-	"github.com/xuanhoang/music-library/internal/appconfig/mongo"
-	"github.com/xuanhoang/music-library/internal/appconfig/redis"
-	"github.com/xuanhoang/music-library/internal/httpserver"
-	pkgCrt "github.com/xuanhoang/music-library/pkg/encrypter"
-	pkgLog "github.com/xuanhoang/music-library/pkg/log"
-	"github.com/xuanhoang/music-library/pkg/rabbitmq"
+	"github.com/quachhoang2002/Music-Library/config"
+	"github.com/quachhoang2002/Music-Library/internal/appconfig/mongo"
+	"github.com/quachhoang2002/Music-Library/internal/appconfig/redis"
+	"github.com/quachhoang2002/Music-Library/internal/httpserver"
+	pkgCrt "github.com/quachhoang2002/Music-Library/pkg/encrypter"
+	pkgLog "github.com/quachhoang2002/Music-Library/pkg/log"
+	"github.com/quachhoang2002/Music-Library/pkg/rabbitmq"
 )
 
 // @title Mucsic Library API

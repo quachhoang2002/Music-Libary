@@ -2,7 +2,7 @@ package http
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/xuanhoang/music-library/internal/middleware"
+	"github.com/quachhoang2002/Music-Library/internal/middleware"
 )
 
 func MapMusicPlaylistRoutes(r *gin.RouterGroup, h Handler, mw middleware.Middleware) {

@@ -4,7 +4,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 
-	"github.com/xuanhoang/music-library/internal/models"
+	"github.com/quachhoang2002/Music-Library/internal/models"
 )
 
 // NewScope creates a new scope.

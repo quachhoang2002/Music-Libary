@@ -4,10 +4,10 @@ import (
 	"context"
 	"os"
 
-	"github.com/xuanhoang/music-library/internal/models"
-	"github.com/xuanhoang/music-library/internal/music/repository"
-	"github.com/xuanhoang/music-library/pkg/file"
-	"github.com/xuanhoang/music-library/pkg/mongo"
+	"github.com/quachhoang2002/Music-Library/internal/models"
+	"github.com/quachhoang2002/Music-Library/internal/music/repository"
+	"github.com/quachhoang2002/Music-Library/pkg/file"
+	"github.com/quachhoang2002/Music-Library/pkg/mongo"
 )
 
 func (uc imlUseCase) Create(ctx context.Context, sc models.Scope, ip CreateInput) (models.MusicTrack, error) {

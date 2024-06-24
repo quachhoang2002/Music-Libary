@@ -3,7 +3,7 @@ package jwt
 import (
 	"context"
 
-	"github.com/xuanhoang/music-library/internal/models"
+	"github.com/quachhoang2002/Music-Library/internal/models"
 )
 
 type PayloadCtxKey struct{}

@@ -3,11 +3,11 @@ package usecase
 import (
 	"context"
 
-	"github.com/xuanhoang/music-library/internal/models"
-	"github.com/xuanhoang/music-library/internal/playlist/repository"
-	pkgLog "github.com/xuanhoang/music-library/pkg/log"
+	"github.com/quachhoang2002/Music-Library/internal/models"
+	"github.com/quachhoang2002/Music-Library/internal/playlist/repository"
+	pkgLog "github.com/quachhoang2002/Music-Library/pkg/log"
 
-	musicUC "github.com/xuanhoang/music-library/internal/music/usecase"
+	musicUC "github.com/quachhoang2002/Music-Library/internal/music/usecase"
 )
 
 type UseCase interface {

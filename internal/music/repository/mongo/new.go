@@ -1,9 +1,9 @@
 package mongo
 
 import (
-	"github.com/xuanhoang/music-library/internal/music/repository"
-	pkgLog "github.com/xuanhoang/music-library/pkg/log"
-	"github.com/xuanhoang/music-library/pkg/mongo"
+	"github.com/quachhoang2002/Music-Library/internal/music/repository"
+	pkgLog "github.com/quachhoang2002/Music-Library/pkg/log"
+	"github.com/quachhoang2002/Music-Library/pkg/mongo"
 )
 
 type implRepository struct {

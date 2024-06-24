@@ -3,8 +3,8 @@ package repository
 import (
 	"context"
 
-	"github.com/xuanhoang/music-library/internal/models"
-	"github.com/xuanhoang/music-library/pkg/paginator"
+	"github.com/quachhoang2002/Music-Library/internal/models"
+	"github.com/quachhoang2002/Music-Library/pkg/paginator"
 )
 
 type Repository interface {

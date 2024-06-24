@@ -9,8 +9,8 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	pkgErrors "github.com/xuanhoang/music-library/pkg/errors"
-	"github.com/xuanhoang/music-library/pkg/telegram"
+	pkgErrors "github.com/quachhoang2002/Music-Library/pkg/errors"
+	"github.com/quachhoang2002/Music-Library/pkg/telegram"
 )
 
 const (

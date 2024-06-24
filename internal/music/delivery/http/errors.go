@@ -1,8 +1,8 @@
 package http
 
 import (
-	"github.com/xuanhoang/music-library/internal/music/usecase"
-	pkgErrors "github.com/xuanhoang/music-library/pkg/errors"
+	"github.com/quachhoang2002/Music-Library/internal/music/usecase"
+	pkgErrors "github.com/quachhoang2002/Music-Library/pkg/errors"
 )
 
 var (

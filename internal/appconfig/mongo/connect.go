@@ -6,9 +6,9 @@ import (
 	"log"
 	"time"
 
-	"github.com/xuanhoang/music-library/config"
-	pkgCrt "github.com/xuanhoang/music-library/pkg/encrypter"
-	"github.com/xuanhoang/music-library/pkg/mongo"
+	"github.com/quachhoang2002/Music-Library/config"
+	pkgCrt "github.com/quachhoang2002/Music-Library/pkg/encrypter"
+	"github.com/quachhoang2002/Music-Library/pkg/mongo"
 )
 
 const (

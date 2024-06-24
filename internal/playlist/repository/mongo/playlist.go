@@ -3,11 +3,11 @@ package mongo
 import (
 	"context"
 
-	"github.com/xuanhoang/music-library/internal/models"
-	"github.com/xuanhoang/music-library/internal/playlist/repository"
-	"github.com/xuanhoang/music-library/pkg/mongo"
-	"github.com/xuanhoang/music-library/pkg/paginator"
-	"github.com/xuanhoang/music-library/pkg/util"
+	"github.com/quachhoang2002/Music-Library/internal/models"
+	"github.com/quachhoang2002/Music-Library/internal/playlist/repository"
+	"github.com/quachhoang2002/Music-Library/pkg/mongo"
+	"github.com/quachhoang2002/Music-Library/pkg/paginator"
+	"github.com/quachhoang2002/Music-Library/pkg/util"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"

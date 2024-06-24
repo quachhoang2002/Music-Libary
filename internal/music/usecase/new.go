@@ -4,9 +4,9 @@ import (
 	"context"
 	"os"
 
-	"github.com/xuanhoang/music-library/internal/models"
-	"github.com/xuanhoang/music-library/internal/music/repository"
-	pkgLog "github.com/xuanhoang/music-library/pkg/log"
+	"github.com/quachhoang2002/Music-Library/internal/models"
+	"github.com/quachhoang2002/Music-Library/internal/music/repository"
+	pkgLog "github.com/quachhoang2002/Music-Library/pkg/log"
 )
 
 type UseCase interface {

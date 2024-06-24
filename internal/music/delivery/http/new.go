@@ -2,8 +2,8 @@ package http
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/xuanhoang/music-library/internal/music/usecase"
-	pkgLog "github.com/xuanhoang/music-library/pkg/log"
+	"github.com/quachhoang2002/Music-Library/internal/music/usecase"
+	pkgLog "github.com/quachhoang2002/Music-Library/pkg/log"
 )
 
 type Handler interface {

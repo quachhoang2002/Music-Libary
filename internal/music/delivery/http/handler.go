@@ -4,11 +4,11 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/xuanhoang/music-library/internal/music/usecase"
-	pkgErrors "github.com/xuanhoang/music-library/pkg/errors"
-	"github.com/xuanhoang/music-library/pkg/jwt"
-	"github.com/xuanhoang/music-library/pkg/paginator"
-	"github.com/xuanhoang/music-library/pkg/response"
+	"github.com/quachhoang2002/Music-Library/internal/music/usecase"
+	pkgErrors "github.com/quachhoang2002/Music-Library/pkg/errors"
+	"github.com/quachhoang2002/Music-Library/pkg/jwt"
+	"github.com/quachhoang2002/Music-Library/pkg/paginator"
+	"github.com/quachhoang2002/Music-Library/pkg/response"
 )
 
 // @Summary Create Track

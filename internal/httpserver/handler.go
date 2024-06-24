@@ -7,18 +7,18 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 
 	// Import this to execute the init function in docs.go which setups the Swagger docs.
-	_ "github.com/xuanhoang/music-library/docs"
-	"github.com/xuanhoang/music-library/pkg/jwt"
+	_ "github.com/quachhoang2002/Music-Library/docs"
+	"github.com/quachhoang2002/Music-Library/pkg/jwt"
 
-	musicHTTP "github.com/xuanhoang/music-library/internal/music/delivery/http"
-	musicRepo "github.com/xuanhoang/music-library/internal/music/repository/mongo"
-	musicUC "github.com/xuanhoang/music-library/internal/music/usecase"
+	musicHTTP "github.com/quachhoang2002/Music-Library/internal/music/delivery/http"
+	musicRepo "github.com/quachhoang2002/Music-Library/internal/music/repository/mongo"
+	musicUC "github.com/quachhoang2002/Music-Library/internal/music/usecase"
 
-	playlistHTTP "github.com/xuanhoang/music-library/internal/playlist/delivery/http"
-	playlistRepo "github.com/xuanhoang/music-library/internal/playlist/repository/mongo"
-	playlistUC "github.com/xuanhoang/music-library/internal/playlist/usecase"
+	playlistHTTP "github.com/quachhoang2002/Music-Library/internal/playlist/delivery/http"
+	playlistRepo "github.com/quachhoang2002/Music-Library/internal/playlist/repository/mongo"
+	playlistUC "github.com/quachhoang2002/Music-Library/internal/playlist/usecase"
 
-	"github.com/xuanhoang/music-library/internal/middleware"
+	"github.com/quachhoang2002/Music-Library/internal/middleware"
 )
 
 func (srv HTTPServer) mapHandlers() error {

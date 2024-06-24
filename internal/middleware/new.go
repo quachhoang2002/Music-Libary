@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"github.com/xuanhoang/music-library/pkg/jwt"
-	"github.com/xuanhoang/music-library/pkg/log"
+	"github.com/quachhoang2002/Music-Library/pkg/jwt"
+	"github.com/quachhoang2002/Music-Library/pkg/log"
 )
 
 type Middleware struct {

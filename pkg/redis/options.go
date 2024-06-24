@@ -3,8 +3,8 @@ package redis
 import (
 	"time"
 
+	"github.com/quachhoang2002/Music-Library/config"
 	"github.com/redis/go-redis/v9"
-	"github.com/xuanhoang/music-library/config"
 )
 
 type ClientOptions struct {
